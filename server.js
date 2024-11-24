@@ -44,7 +44,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Маршрут для логина пользователей
-app.post("/api/users/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -67,7 +67,7 @@ app.post("/api/users/login", async (req, res) => {
 });
 
 // Маршрут для получения данных о текущем пользователе
-app.get("/api/users/me", async (req, res) => {
+app.get("/me", async (req, res) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
