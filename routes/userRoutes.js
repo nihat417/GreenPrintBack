@@ -1,5 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const generateAccessToken = require("../middleware/generateAccessToken");
 const generateRefreshToken = require("../middleware/generateRefreshToken");
 const User = require("../models/user");
@@ -15,13 +14,11 @@ router.post("/register", async (req, res) => {
         return res.status(400).json({ message: "User already exists." });
       }
   
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
       const newUser = new User({
         firstName,
         lastName,
         email,
-        password: hashedPassword,
+        password,  
         carbonEmissionUse,
       });
   
@@ -32,7 +29,6 @@ router.post("/register", async (req, res) => {
     }
 });
 
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -42,8 +38,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "User not found." });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    if (user.password !== password) {
       return res.status(400).json({ message: "Invalid password." });
     }
 
@@ -56,6 +51,38 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error logging in user.", error });
   }
 });
+  
+router.get("/me", async (req, res) => {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+      return res.status(401).json({ message: "No token provided." });
+  }
+
+  try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); 
+
+      const user = await User.findById(decoded.id).populate("carbonEmissions"); 
+
+      if (!user) {
+          return res.status(404).json({ message: "User not found." });
+      }
+
+      res.json({
+          id: user._id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          carbonEmissionUse: user.carbonEmissionUse,
+          carbonEmissions: user.carbonEmissions,
+      });
+  } catch (error) {
+      res.status(401).json({ message: "Invalid token." });
+  }
+});
+
+module.exports = router;
+
   
   
 router.get("/me", async (req, res) => {
