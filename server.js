@@ -19,7 +19,7 @@ mongoose
   .catch((err) => console.error("Error connecting to MongoDB Atlas:", err));
 
 // Маршрут для регистрации пользователей
-app.post("/api/users/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   const { firstName, lastName, email, password, carbonEmissionUse } = req.body;
 
   try {
