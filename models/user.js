@@ -21,12 +21,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 6,
-    
   },
   carbonEmissionUse: {
     type: Number,
     default: 0,
   },
+  carbonEmissions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CarbonEmission", 
+    },
+  ],
 }, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);

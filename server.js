@@ -3,8 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cluster = require("cluster");
-const os = require("os");
 const userRoutes = require("./routes/userRoutes");
+const carbonRoutes = require("./routes/carbonEmissionUseRoutes");
 const DATABASE_URL = process.env.DATABASE_URL;
 
 const app = express();
@@ -25,6 +25,7 @@ mongoose
   });
   
 app.use("/api/users", userRoutes);
+app.use("/api/carbonuses", carbonRoutes);
 
 
   app.listen(4000, () => {

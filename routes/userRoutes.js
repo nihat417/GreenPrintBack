@@ -68,23 +68,24 @@ router.get("/me", async (req, res) => {
   try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); 
 
-      const user = await User.findById(decoded.id); 
+      const user = await User.findById(decoded.id).populate("carbonEmissions"); 
 
       if (!user) {
           return res.status(404).json({ message: "User not found." });
       }
 
       res.json({
+          id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
           carbonEmissionUse: user.carbonEmissionUse,
+          carbonEmissions: user.carbonEmissions,
       });
   } catch (error) {
       res.status(401).json({ message: "Invalid token." });
   }
 });
-
 
 
 module.exports = router;
