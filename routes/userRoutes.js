@@ -83,6 +83,29 @@ router.get("/me", async (req, res) => {
 
 module.exports = router;
 
+
+router.get("/userId", async (req, res) => {
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.json({ userId: user._id });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token." });
+  }
+});
+
   
   
 router.get("/me", async (req, res) => {

@@ -22,7 +22,6 @@ router.post("/addEmission", async (req, res) => {
     const user = await User.findById(userId);
     if (!user) 
       return res.status(404).json({ message: "User not found" });
-    
 
     const carbonEmission = new CarbonEmission({
       carDistance,
@@ -37,7 +36,7 @@ router.post("/addEmission", async (req, res) => {
     });
 
     const result = carbonEmission.calculateCarbonEmissions();
-    carbonEmission.result = result;
+    carbonEmission.result = result;  
 
     const savedEmission = await carbonEmission.save();
 
@@ -46,11 +45,17 @@ router.post("/addEmission", async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ message: "Carbon emission added successfully.", user, savedEmission });
+    res.status(201).json({
+      message: "Carbon emission added successfully.",
+      user,
+      savedEmission,
+      result, 
+    });
   } catch (error) {
     res.status(500).json({ message: "Error adding carbon emission.", error });
   }
 });
+
 
 
 router.get("/suggestions/:userId", async (req, res) => {

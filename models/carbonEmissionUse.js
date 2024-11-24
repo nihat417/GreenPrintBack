@@ -3,53 +3,47 @@ const mongoose = require("mongoose");
 const carbonEmissionSchema = new mongoose.Schema({
   carDistance: {
     type: Number, // В километрах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   publicTransport: {
     type: Number, // В километрах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   flights: {
     type: Number, // В километрах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   electricity: {
     type: Number, // В киловатт-часах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   homeHeating: {
     type: Number, // В киловатт-часах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   diet: {
     type: String, // "Comprehensive", "Vegetarian", "Vegan"
-    required: true,
-    default: 0, 
+    default: "Comprehensive",  // Устанавливаем значение по умолчанию
   },
   weeklyTrashGenerated: {
     type: Number, // В килограммах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   monthlySpending: {
     type: Number, // В долларах
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   onlineShop: {
     type: Number, // Количество продуктов
-    required: true,
-    default: 0, 
+    default: 0,  // Устанавливаем значение по умолчанию
   },
   numberOfPeopleInFamily: {
     type: Number,
-    required: true,
-    default: 0, 
+    default: 1,  // Устанавливаем значение по умолчанию
+  },
+  result: {
+    type: Number, // Результат вычисления углеродных выбросов
+    required: true,  // Оставляем обязательным, так как это итоговое значение
   },
 }, { timestamps: true });
 
